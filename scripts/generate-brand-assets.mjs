@@ -45,8 +45,16 @@ const squareIcon = () => sharp(squareBuffer);
 
 await mkdir(appDir, { recursive: true });
 
-await squareIcon().resize(512, 512).png({ compressionLevel: 9 }).toFile(resolve(appDir, "icon.png"));
-await squareIcon().resize(180, 180).flatten({ background: bg }).png({ compressionLevel: 9 }).toFile(resolve(appDir, "apple-icon.png"));
+const png = { compressionLevel: 9, palette: true, quality: 90, effort: 10 };
+const publicIcons = resolve(root, "public/icons");
+await mkdir(publicIcons, { recursive: true });
+
+// rel="icon" liviano (se descarga durante la carga): 48x48 paletizado.
+await squareIcon().resize(48, 48).flatten({ background: bg }).png({ ...png, colours: 32 }).toFile(resolve(appDir, "icon.png"));
+await squareIcon().resize(180, 180).flatten({ background: bg }).png({ ...png, colours: 64 }).toFile(resolve(appDir, "apple-icon.png"));
+// 192 y 512 viven solo en el manifest, servidos desde public/.
+await squareIcon().resize(192, 192).flatten({ background: bg }).png({ ...png, colours: 64 }).toFile(resolve(publicIcons, "icon-192.png"));
+await squareIcon().resize(512, 512).flatten({ background: bg }).png({ ...png, colours: 64 }).toFile(resolve(publicIcons, "icon-512.png"));
 
 // OG 1200x630: logo completo centrado sobre el negro del logo.
 const ogLogo = await sharp(logoPath).resize(630, 630).toBuffer();
@@ -60,4 +68,4 @@ await writeFile(
   "Logo de AT Turismo y Viajes: corona dorada, letras A.T azules y una ola azul y dorada sobre fondo negro",
 );
 
-console.log("Activos generados en src/app (icon.png, apple-icon.png, opengraph-image.jpg, .alt.txt)");
+console.log("Activos generados en src/app y public/icons (icon.png, apple-icon.png, opengraph-image.jpg, .alt.txt)");
