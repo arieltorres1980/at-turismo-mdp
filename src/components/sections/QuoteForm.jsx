@@ -8,6 +8,7 @@ import { WhatsAppIcon } from "@/components/ui/BrandIcons";
 import content from "@/data/content.json";
 import { contact } from "@/lib/contact";
 import useClientValue from "@/lib/useClientValue";
+import { openExternal } from "@/lib/openExternal";
 import {
   MAX_NOMBRE,
   MAX_OBSERVACIONES,
@@ -109,8 +110,9 @@ export default function QuoteForm() {
     setErrorFields([]);
 
     const url = buildQuoteUrl(payload, { businessName: contact.businessName });
-    const ventana = window.open(url, "_blank", "noopener");
-    if (!ventana) setFallbackUrl(url);
+    // El fallback solo aparece si la pestana REALMENTE no se abrio: ver
+    // `openExternal` para el porque de no usar el feature `noopener`.
+    if (!openExternal(url)) setFallbackUrl(url);
   };
 
   const restantes = MAX_OBSERVACIONES - values.observaciones.length;

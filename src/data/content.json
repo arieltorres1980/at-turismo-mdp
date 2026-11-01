@@ -218,7 +218,7 @@
       },
       "fechaLlegada": {
         "label": "Fecha de llegada (opcional)",
-        "help": "Completala solo si es ida y vuelta."
+        "help": "Opcional: completala si es ida y vuelta o si querés indicar cuándo llegás."
       },
       "horario": {
         "label": "Horario de salida"
