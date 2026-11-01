@@ -1,4 +1,4 @@
-# CLAUDE.md — AT Turismo y Viajes (landing)
+# CLAUDE.md — AT Turismo y Traslados (landing)
 
 Landing de una sola página para un servicio de **traslados y viajes de Mar del Plata**.
 Sin backend, sin base de datos, sin autenticación, sin datos sensibles. El formulario de

@@ -136,8 +136,8 @@ test("formatFecha pasa de ISO a DD/MM/AAAA y deja pasar lo vacio", () => {
 });
 
 test("el mensaje saluda con el nombre y lista los datos cargados", () => {
-  const msg = buildQuoteMessage(base, { businessName: "AT Turismo y Viajes" });
-  assert.ok(msg.startsWith("¡Hola AT Turismo y Viajes! Soy Juana Pérez y quiero cotizar un viaje."));
+  const msg = buildQuoteMessage(base, { businessName: "AT Turismo y Traslados" });
+  assert.ok(msg.startsWith("¡Hola AT Turismo y Traslados! Soy Juana Pérez y quiero cotizar un viaje."));
   assert.ok(msg.includes("• Origen: Av. Colón 1234, Mar del Plata"));
   assert.ok(msg.includes("• Fecha de salida: 10/11/2026"));
   assert.ok(msg.includes("• Horario: 05:30"));
@@ -170,10 +170,10 @@ test("sin observaciones la linea no aparece", () => {
 test("observaciones con emoji y `&` sobreviven el ida y vuelta por la URL", () => {
   const observaciones = "Somos 2 adultos & 1 bebé 👶 ¿hay silla? 100% seguro #viaje";
   const values = { ...base, observaciones };
-  const url = buildQuoteUrl(values, { businessName: "AT Turismo y Viajes" });
+  const url = buildQuoteUrl(values, { businessName: "AT Turismo y Traslados" });
   const parsed = new URL(url);
   assert.equal(parsed.origin + parsed.pathname, "https://wa.me/5492235719924");
-  assert.equal(parsed.searchParams.get("text"), buildQuoteMessage(values, { businessName: "AT Turismo y Viajes" }));
+  assert.equal(parsed.searchParams.get("text"), buildQuoteMessage(values, { businessName: "AT Turismo y Traslados" }));
   assert.ok(parsed.searchParams.get("text").includes(observaciones));
 });
 
@@ -206,7 +206,7 @@ test("con todos los campos en su maximo VALIDO la URL queda por debajo de 2000",
   const r = validateQuote(values, { today: HOY });
   assert.equal(r.valid, true, `el caso tope tiene que ser valido: ${JSON.stringify(r.errors)}`);
 
-  const url = buildQuoteUrl(values, { businessName: "AT Turismo y Viajes" });
+  const url = buildQuoteUrl(values, { businessName: "AT Turismo y Traslados" });
   assert.ok(url.length < 2000, `la URL mide ${url.length} caracteres`);
 });
 
@@ -229,7 +229,7 @@ test("el peor caso admitido por los topes codificados no llega a 2000", () => {
       nombre: "n",
       telefono: "+54 (223) 571-9924",
     },
-    { businessName: "AT Turismo y Viajes" },
+    { businessName: "AT Turismo y Traslados" },
   ).length;
   assert.ok(fijo + presupuesto < 2000, `cota superior: ${fijo + presupuesto}`);
 });

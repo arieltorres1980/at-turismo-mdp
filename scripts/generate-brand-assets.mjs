@@ -65,7 +65,7 @@ await sharp({ create: { width: 1200, height: 630, channels: 3, background: bg } 
 
 await writeFile(
   resolve(appDir, "opengraph-image.alt.txt"),
-  "Logo de AT Turismo y Viajes: corona dorada, letras A.T azules y una ola azul y dorada sobre fondo negro",
+  "Logo de AT Turismo y Traslados: corona dorada, letras A.T azules y una ola azul y dorada sobre fondo negro",
 );
 
 console.log("Activos generados en src/app y public/icons (icon.png, apple-icon.png, opengraph-image.jpg, .alt.txt)");
