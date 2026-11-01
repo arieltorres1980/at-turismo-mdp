@@ -1,0 +1,33 @@
+{
+  "businessName": "AT Turismo y Viajes",
+  "shortName": "AT Turismo",
+  "tagline": "Traslados y viajes desde Mar del Plata",
+  "description": "Traslados y viajes desde Mar del Plata: aeropuertos, terminales, puerta a puerta y excursiones. Cotizá tu viaje por WhatsApp en minutos.",
+  "siteUrl": "https://at-turismo-mdp.vercel.app",
+  "locale": "es-AR",
+  "phone": {
+    "display": "+54 9 223 571-9924",
+    "e164": "+5492235719924"
+  },
+  "whatsapp": {
+    "number": "5492235719924",
+    "defaultMessage": "¡Hola! Quiero hacer una consulta sobre un traslado."
+  },
+  "email": "",
+  "instagram": {
+    "user": "traslados.mdp.ok",
+    "url": "https://www.instagram.com/traslados.mdp.ok/"
+  },
+  "address": {
+    "street": "",
+    "locality": "Mar del Plata",
+    "region": "Buenos Aires",
+    "postalCode": "",
+    "country": "AR"
+  },
+  "areaServed": ["Mar del Plata", "TODO_CLIENTE"],
+  "openingHours": [],
+  "legal": {
+    "license": ""
+  }
+}

@@ -1,0 +1,259 @@
+{
+  "_nota": "Textos editables de la landing. Todo item con \"status\": \"TODO_CLIENTE\" es un texto provisorio escrito por el equipo: hay que reemplazarlo por el texto real del cliente antes de pasar a produccion. Los datos de contacto NO van aca: van en contact.json.",
+  "hero": {
+    "status": "TODO_CLIENTE",
+    "eyebrow": "Mar del Plata y toda la Costa Atlántica",
+    "title": "Traslados y viajes con la tranquilidad de llegar bien",
+    "titleHighlight": "llegar bien",
+    "subtitle": "Te llevamos al aeropuerto, a la terminal o adonde necesites, con horario acordado, precio cerrado y alguien que atiende el teléfono.",
+    "primaryCta": "Cotizar mi viaje",
+    "secondaryCta": "Escribinos por WhatsApp",
+    "highlights": [
+      { "icon": "Clock", "text": "Puntualidad acordada" },
+      { "icon": "CreditCard", "text": "Precio cerrado, sin sorpresas" },
+      { "icon": "ShieldCheck", "text": "Vehículos en regla" }
+    ]
+  },
+  "headings": {
+    "services": {
+      "eyebrow": "Servicios",
+      "title": "En qué te podemos ayudar",
+      "subtitle": "Viajes cortos y largos, dentro y fuera de Mar del Plata."
+    },
+    "howItWorks": {
+      "eyebrow": "Cómo funciona",
+      "title": "Reservar te lleva tres pasos",
+      "subtitle": "Sin formularios eternos ni esperas: nos contás el viaje y te confirmamos."
+    },
+    "destinations": {
+      "title": "Destinos frecuentes"
+    },
+    "whyUs": {
+      "eyebrow": "Por qué elegirnos",
+      "title": "Un viaje que no te da trabajo",
+      "subtitle": "Lo que cuidamos en cada traslado."
+    },
+    "faq": {
+      "eyebrow": "Preguntas frecuentes",
+      "title": "Lo que más nos consultan",
+      "subtitle": "Si tu duda no está acá, escribinos y te respondemos."
+    },
+    "testimonials": {
+      "eyebrow": "Opiniones",
+      "title": "Lo que dicen quienes ya viajaron"
+    },
+    "contact": {
+      "eyebrow": "Cotizá tu viaje",
+      "title": "Contanos tu viaje y te pasamos el precio",
+      "subtitle": "Completá los datos y se abre WhatsApp con el mensaje ya escrito. No guardamos nada de lo que cargues acá."
+    }
+  },
+  "services": [
+    {
+      "status": "TODO_CLIENTE",
+      "icon": "Plane",
+      "title": "Traslados a aeropuertos",
+      "text": "Ezeiza, Aeroparque y el aeropuerto de Mar del Plata, con seguimiento del vuelo y margen de tiempo."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "icon": "Bus",
+      "title": "Terminales y micros",
+      "text": "Te pasamos a buscar o te dejamos en la terminal con el tiempo suficiente para despachar el equipaje."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "icon": "Car",
+      "title": "Puerta a puerta",
+      "text": "Viajes dentro de la ciudad: hoteles, clínicas, estudios, reuniones o lo que necesites."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "icon": "Route",
+      "title": "Viajes a la costa y larga distancia",
+      "text": "Villa Gesell, Pinamar, Miramar, Necochea, Buenos Aires y destinos a convenir."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "icon": "Users",
+      "title": "Grupos y eventos",
+      "text": "Casamientos, congresos, delegaciones y empresas. Coordinamos varios vehículos si hace falta."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "icon": "MapPin",
+      "title": "Excursiones y paseos",
+      "text": "Salidas de un día por la zona, con chofer que conoce los caminos y los tiempos."
+    }
+  ],
+  "steps": [
+    {
+      "status": "TODO_CLIENTE",
+      "title": "Contanos el viaje",
+      "text": "Origen, destino, día, horario y cuántos son. Te lleva menos de un minuto."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "title": "Te pasamos el precio",
+      "text": "Respondemos por WhatsApp con el valor cerrado y el vehículo que corresponde."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "title": "Confirmás y listo",
+      "text": "El día del viaje el chofer te avisa cuando está en camino. Vos solo subís."
+    }
+  ],
+  "destinations": [
+    "Aeropuerto de Ezeiza",
+    "Aeroparque",
+    "Aeropuerto de Mar del Plata",
+    "Terminal de Mar del Plata",
+    "Buenos Aires",
+    "Miramar",
+    "Villa Gesell",
+    "Pinamar",
+    "Necochea",
+    "Balcarce"
+  ],
+  "advantages": [
+    {
+      "status": "TODO_CLIENTE",
+      "icon": "Clock",
+      "title": "Puntualidad",
+      "text": "Salimos con margen y seguimos el estado del vuelo o del micro para no correr."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "icon": "CreditCard",
+      "title": "Precio cerrado",
+      "text": "El valor que te pasamos es el que pagás. Sin reloj, sin recargos de último momento."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "icon": "ShieldCheck",
+      "title": "Vehículos en regla",
+      "text": "Unidades revisadas, con documentación y seguro al día."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "icon": "HeartHandshake",
+      "title": "Trato de persona a persona",
+      "text": "Hablás siempre con alguien del equipo, no con un chatbot."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "icon": "Luggage",
+      "title": "Espacio para el equipaje",
+      "text": "Nos decís cuántas valijas llevás y mandamos el vehículo que entra."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "icon": "CalendarCheck",
+      "title": "Reservás con anticipación",
+      "text": "Dejás el viaje agendado y te lo recordamos el día anterior."
+    }
+  ],
+  "faq": [
+    {
+      "status": "TODO_CLIENTE",
+      "q": "¿Con cuánta anticipación conviene reservar?",
+      "a": "Cuanto antes mejor, sobre todo en temporada y para viajes de madrugada. Igual, escribinos aunque sea sobre la hora: si hay disponibilidad, te lo resolvemos."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "q": "¿Cuántos pasajeros entran?",
+      "a": "Depende del vehículo. Para grupos grandes coordinamos más de una unidad. Contanos cuántos son y te confirmamos."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "q": "¿Llevan sillas para bebés o niños?",
+      "a": "Avisanos al reservar la edad del menor y lo coordinamos."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "q": "¿Cuánto equipaje puedo llevar?",
+      "a": "Decinos cuántas valijas y bolsos llevás cuando pedís la cotización, así mandamos el vehículo adecuado."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "q": "¿Viajan mascotas?",
+      "a": "Consultanos antes de reservar. Según el tamaño y el transportín, lo evaluamos."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "q": "¿Cómo se paga?",
+      "a": "Te informamos las formas de pago disponibles al confirmar la reserva."
+    },
+    {
+      "status": "TODO_CLIENTE",
+      "q": "¿Qué pasa si tengo que cancelar?",
+      "a": "Avisanos lo antes posible por WhatsApp y lo reprogramamos o lo cancelamos sin vueltas."
+    }
+  ],
+  "testimonials": [],
+  "contact": {
+    "status": "TODO_CLIENTE",
+    "asideTitle": "Hablemos directo",
+    "asideText": "Si preferís no completar el formulario, escribinos o llamanos. Respondemos todos los días.",
+    "formTitle": "Pedí tu cotización",
+    "formNote": "Al enviar se abre WhatsApp con el mensaje ya armado. Nada de esto se guarda en el sitio."
+  },
+  "form": {
+    "maxPassengers": 20,
+    "submitLabel": "Cotizar por WhatsApp",
+    "fallbackLabel": "Abrir WhatsApp",
+    "fallbackHelp": "El navegador bloqueó la ventana. Tocá el botón para abrir WhatsApp.",
+    "errorSummaryTitle": "Revisá estos campos antes de enviar",
+    "fields": {
+      "origen": {
+        "label": "Origen",
+        "placeholder": "Dirección, hotel o localidad de salida"
+      },
+      "destino": {
+        "label": "Destino",
+        "placeholder": "Adónde vas"
+      },
+      "fechaSalida": {
+        "label": "Fecha de salida"
+      },
+      "fechaLlegada": {
+        "label": "Fecha de llegada (opcional)",
+        "help": "Completala solo si es ida y vuelta."
+      },
+      "horario": {
+        "label": "Horario de salida"
+      },
+      "pasajeros": {
+        "label": "Cantidad de pasajeros"
+      },
+      "incluyeMenores": {
+        "label": "¿Viajan menores?",
+        "yes": "Sí",
+        "no": "No"
+      },
+      "menores": {
+        "label": "Cantidad de menores"
+      },
+      "observaciones": {
+        "label": "Observaciones (opcional)",
+        "placeholder": "Equipaje, silla para bebé, mascota, número de vuelo…",
+        "counterSuffix": "caracteres disponibles"
+      },
+      "nombre": {
+        "label": "Tu nombre",
+        "placeholder": "Nombre y apellido"
+      },
+      "telefono": {
+        "label": "Tu teléfono",
+        "placeholder": "223 555-1234"
+      }
+    }
+  },
+  "footer": {
+    "status": "TODO_CLIENTE",
+    "about": "Traslados y viajes desde Mar del Plata hacia aeropuertos, terminales y destinos de la costa.",
+    "navTitle": "Secciones",
+    "contactTitle": "Contacto",
+    "disclaimer": "Las cotizaciones se coordinan por WhatsApp. Este sitio no procesa pagos ni almacena datos personales."
+  }
+}

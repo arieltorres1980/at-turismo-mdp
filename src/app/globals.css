@@ -1,26 +1,189 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ===========================================================================
+   Tokens de marca — AT Turismo y Viajes
+   ---------------------------------------------------------------------------
+   Origen de los hex: medidos sobre public/brand/logo.jpg (640x640, JPEG sin
+   transparencia) con sharp, leyendo el pixel crudo. Muestras tomadas el
+   2026-11-01:
+     fondo del logo .......... #020202  (81,2 % de la imagen)
+     letras "A.T" ............ #01267E / #0B2359 / #132962
+     corona (dorado) ......... #EAAE29 / #F0C84E / #F6D636
+     ola dorada .............. #C08922
+     ola azul (claro) ........ #1E77BB
+     ola azul (medio) ........ #194471
+
+   Tabla de contraste (WCAG 2.1, formula de luminancia relativa). Pares
+   efectivamente usados en la UI:
+
+     texto / fondo                                    ratio    uso
+     ------------------------------------------------------------------------
+     #FFFFFF  sobre  #050608 (brand-black)           20,27:1  AAA  texto dark
+     #F0C84E  sobre  #050608                         12,62:1  AAA  acento dark
+     #CFE0F5  sobre  #0A2A6E (brand-navy)             9,96:1  AAA  texto dark
+     #FFFFFF  sobre  #0A2A6E                         13,38:1  AAA  texto dark
+     #F0C84E  sobre  #0A2A6E                          8,33:1  AAA  acento dark
+     #FFFFFF  sobre  #1E77BB (brand-blue)             4,76:1  AA   CTA
+     #FFFFFF  sobre  #155F97 (brand-blue-deep)        6,74:1  AAA  CTA hover
+     #050608  sobre  #F0C84E                         12,62:1  AAA  CTA dorado
+     #0A2A6E  sobre  #FFFFFF                         13,38:1  AAA  titulos
+     #0A2A6E  sobre  #F2F6FC (surface-soft)          12,34:1  AAA  titulos
+     #0F172A  sobre  #FFFFFF (ink)                   17,85:1  AAA  texto
+     #475569  sobre  #F2F6FC (ink-soft)               6,99:1  AAA  texto 2do
+     #155F97  sobre  #F2F6FC                          6,21:1  AAA  links
+     #B91C1C  sobre  #FFFFFF (danger)                 6,47:1  AAA  errores
+
+   Pares PROHIBIDOS (documentados para que nadie los reintroduzca):
+     #0A2A6E sobre #050608 -> 1,51:1. El azul marino del logo sobre negro no
+     llega a AA. Sobre fondo oscuro se usa blanco, #CFE0F5 o el dorado.
+     #1E77BB sobre #F2F6FC -> 4,39:1. Para texto normal sobre fondo suave se
+     usa #155F97 (brand-blue-deep).
+   =========================================================================== */
+
+@theme {
+  --color-brand-black: #050608;
+  --color-brand-navy: #0a2a6e;
+  --color-brand-navy-deep: #06183f;
+  --color-brand-blue: #1e77bb;
+  --color-brand-blue-deep: #155f97;
+  --color-brand-mist: #cfe0f5;
+  --color-brand-gold: #f0c84e;
+  --color-brand-gold-deep: #c08922;
+
+  --color-ink: #0f172a;
+  --color-ink-soft: #475569;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f2f6fc;
+  --color-danger: #b91c1c;
+  /* Verde oficial de WhatsApp. No es un color de la marca: solo se usa en el
+     boton flotante, con el icono en #050608 encima (13,27:1). */
+  --color-whatsapp: #25d366;
+
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), ui-serif, Georgia, serif;
+
+  --animate-wave-slow: wave 18s linear infinite;
+  --animate-wave-slower: wave 26s linear infinite;
+  --animate-float-soft: float-soft 7s ease-in-out infinite;
+
+  --breakpoint-xxs: 20rem; /* 320px */
+  --breakpoint-xs: 23.4375rem; /* 375px */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes wave {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
   }
 }
 
+@keyframes float-soft {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -0.5rem, 0);
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1.25rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Las anclas de la navbar no quedan tapadas por la barra sticky. */
+[id] {
+  scroll-margin-top: 5.5rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Reveal — mejora progresiva.
+   El estado oculto SOLO aplica cuando hay JS (la clase .js la pone un script
+   inline en <head>). Sin JS el contenido se ve, y los crawlers lo leen.
+   --------------------------------------------------------------------------- */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 1.5rem, 0);
+  transition:
+    opacity 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js [data-reveal="left"] {
+  transform: translate3d(-1.5rem, 0, 0);
+}
+
+.js [data-reveal="right"] {
+  transform: translate3d(1.5rem, 0, 0);
+}
+
+.js [data-reveal="zoom"] {
+  transform: scale(0.96);
+}
+
+.js [data-reveal][data-revealed="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+.hero-rise {
+  animation: hero-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion: nada se mueve y nada queda oculto.
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .js [data-reveal],
+  .js [data-reveal][data-revealed="true"] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .hero-rise {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Foco visible y consistente en toda la pagina. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-brand-gold);
+  outline-offset: 2px;
+  border-radius: 0.25rem;
 }
