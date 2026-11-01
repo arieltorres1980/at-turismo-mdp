@@ -55,8 +55,8 @@ tiene que dar **0 resultados**.
 
 Regla del contrato: **string vacío = no se muestra y no se emite en el JSON-LD.**
 
-Los textos de las secciones viven en `src/data/content.json`. Lo que todavía no confirmó el
-cliente queda marcado con `TODO_CLIENTE` y **bloquea el pase a producción**, no el desarrollo.
+Los textos de las secciones viven en `src/data/content.json`. Revisalos con el cliente: no
+afirmes seguros, horarios ni precios que no estén confirmados.
 
 ## 5. Cómo se corre
 

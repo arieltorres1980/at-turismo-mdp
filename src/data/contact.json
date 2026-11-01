@@ -25,7 +25,9 @@
     "postalCode": "",
     "country": "AR"
   },
-  "areaServed": ["Mar del Plata", "TODO_CLIENTE"],
+  "areaServed": [
+    "Mar del Plata"
+  ],
   "openingHours": [],
   "legal": {
     "license": ""
