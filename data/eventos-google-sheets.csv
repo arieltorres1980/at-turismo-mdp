@@ -1,0 +1,4 @@
+Título,Descripción,Día,Hora,Banner,Activo
+Ejemplo: Recital en el Teatro Auditorium,"Ejemplo. Dejala en NO o borrala. Armamos el traslado de ida y vuelta para el show.",14/12/2026,21:00,recital.jpg,NO
+Ejemplo: Fiesta de fin de año,"Ejemplo sin hora ni banner. Dejala en NO para que no se publique.",31/12/2026,,,NO
+Ejemplo: banner desde Google Drive,"Ejemplo de banner con el link de una imagen compartida en Drive. Dejala en NO.",15/01/2027,20:30,https://drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUvWxYz012345/view,NO
