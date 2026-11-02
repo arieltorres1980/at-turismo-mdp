@@ -7,17 +7,22 @@ import Services from "@/components/sections/Services";
 import Testimonials from "@/components/sections/Testimonials";
 import WhyUs from "@/components/sections/WhyUs";
 import { assertContact } from "@/lib/contact";
+import { getEvents } from "@/lib/events-source";
 
 // Si contact.json quedo mal editado, que rompa el build y no la produccion.
 assertContact();
 
-export default function Home() {
+export default async function Home() {
+  // Fuente activa: la Google Sheet de `contact.eventsSheet` o, si no hay,
+  // `src/data/events.json`. Cacheado con `use cache` (ver events-source.js).
+  const eventos = await getEvents();
+
   return (
     <>
       <Hero />
       <Services />
       <HowItWorks />
-      <Events />
+      <Events events={eventos} />
       <WhyUs />
       <Testimonials />
       <Faq />

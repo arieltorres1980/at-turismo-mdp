@@ -1,5 +1,4 @@
 import content from "../data/content.json" with { type: "json" };
-import events from "../data/events.json" with { type: "json" };
 
 /**
  * Anclas de la navbar y del footer.
@@ -8,16 +7,21 @@ import events from "../data/events.json" with { type: "json" };
  * esta:
  *   - testimonios (D4c del PLAN): si no hay reseñas reales con permiso,
  *     `content.testimonials` queda en `[]`;
- *   - eventos: si `data/eventos.xlsx` no tiene ningun evento activo,
- *     `events.json` queda en `[]`.
+ *   - eventos: si la fuente activa (la Google Sheet o, sin hoja configurada,
+ *     `events.json`) no tiene ningun evento.
  *
- * El link de eventos se decide en el build, con el JSON completo. El descarte
- * de los eventos que ya pasaron corre despues, en el cliente (no se puede leer
- * la fecha actual en el prerender), asi que si TODOS los eventos cargados
- * quedaron viejos el link sigue en el menu aunque la seccion se oculte. Por eso
- * la planilla pide borrar las filas pasadas.
+ * `eventos` es obligatorio en la practica: lo pasa `app/layout.js` con el
+ * resultado de `getEvents()`, la MISMA lista que recibe la seccion. Si no se
+ * pasa nada el link no existe, que es el estado seguro (nunca un link a una
+ * seccion que no se renderizo).
+ *
+ * El descarte de los eventos que ya pasaron corre despues, en el cliente (con
+ * `cacheComponents: true` no se puede leer la fecha actual en el prerender),
+ * asi que si TODOS los eventos cargados quedaron viejos el link sigue en el
+ * menu aunque la seccion se oculte. Por eso la planilla pide borrar las filas
+ * pasadas.
  */
-export function navItems(data = content, eventos = events) {
+export function navItems(data = content, eventos = []) {
   const items = [
     { href: "#servicios", label: "Servicios" },
     { href: "#como-funciona", label: "Cómo funciona" },

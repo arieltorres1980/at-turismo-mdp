@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { CalendarDays, Clock } from "lucide-react";
 
@@ -8,7 +9,6 @@ import Section from "@/components/ui/Section";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { WhatsAppIcon } from "@/components/ui/BrandIcons";
 import content from "@/data/content.json";
-import events from "@/data/events.json";
 import { contact } from "@/lib/contact";
 import { dateTimeAttr, formatearFechaEvento, hoyISO, proximosEventos } from "@/lib/events";
 import useClientValue from "@/lib/useClientValue";
@@ -19,26 +19,67 @@ const ID = "eventos";
 /** Tamaños servidos del banner: una columna en mobile, dos en md, tres en lg. */
 const SIZES = "(min-width: 1024px) 31vw, (min-width: 768px) 46vw, 92vw";
 
+/** Fondo de marca cuando el evento no tiene banner, o cuando el banner falla. */
+function BannerDecorativo() {
+  return (
+    // No aporta informacion: el titulo ya esta como texto debajo.
+    <div
+      aria-hidden="true"
+      className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(85%_80%_at_20%_0%,var(--color-brand-navy)_0%,var(--color-brand-navy-deep)_55%,var(--color-brand-black)_100%)]"
+    >
+      <CalendarDays className="size-12 text-brand-gold/70" />
+    </div>
+  );
+}
+
 /**
- * "Próximos eventos". Los datos vienen de `src/data/events.json`, que genera
- * `scripts/build-events.mjs` leyendo `data/eventos.xlsx` antes de cada build.
+ * El banner: un archivo de `public/eventos/` (`banner`) o una imagen de Drive
+ * (`bannerUrl`, hosts habilitados en `src/lib/banner-hosts.js`).
+ *
+ * Si la imagen no carga (la borraron del Drive, le cambiaron los permisos, el
+ * archivo local no existe) se cae al fondo de marca en vez de dejar el hueco
+ * roto de una imagen fallada. Por eso hace falta estado por tarjeta.
+ */
+function BannerEvento({ evento }) {
+  const [fallo, setFallo] = useState(false);
+  const src = evento.bannerUrl ?? (evento.banner ? `/eventos/${evento.banner}` : null);
+
+  if (!src || fallo) return <BannerDecorativo />;
+
+  return (
+    <Image
+      src={src}
+      alt={evento.title}
+      fill
+      sizes={SIZES}
+      className="object-cover"
+      onError={() => setFallo(true)}
+    />
+  );
+}
+
+/**
+ * "Próximos eventos". Los datos llegan por props: los resuelve en el servidor
+ * `src/lib/events-source.js`, que lee la Google Sheet de `contact.eventsSheet`
+ * y cae a `src/data/events.json` (el que genera el build desde
+ * `data/eventos.xlsx`) si no hay hoja o la hoja no responde.
  *
  * Por que es Client Component: hay que descartar los eventos que ya pasaron, y
  * con `cacheComponents: true` el prerender no puede leer la fecha actual. El
  * filtro corre entonces en el cliente, con `useClientValue`.
  *
  * Mejora progresiva (decision documentada en CLAUDE.md):
- *   - en el HTML prerenderizado y sin JavaScript se ven TODOS los eventos del
- *     JSON, incluso alguno que ya haya pasado. Es tolerante a proposito: mejor
+ *   - en el HTML prerenderizado y sin JavaScript se ven TODOS los eventos de la
+ *     fuente, incluso alguno que ya haya pasado. Es tolerante a proposito: mejor
  *     mostrar un evento viejo que esconder la seccion entera;
  *   - con JavaScript, apenas hidrata se descartan los pasados, y si no queda
  *     ninguno la seccion desaparece del DOM.
  *
- * Si `events.json` esta vacio (el caso normal cuando el cliente no cargo nada),
- * la seccion no se renderiza NUNCA y su link no existe en la navegacion, igual
- * que pasa con los testimonios.
+ * Si la lista esta vacia (el caso normal cuando el cliente no cargo nada), la
+ * seccion no se renderiza NUNCA y su link no existe en la navegacion, igual que
+ * pasa con los testimonios.
  */
-export default function Events() {
+export default function Events({ events = [] }) {
   // `null` en el servidor y en el primer render: ahi no se filtra nada.
   const hoy = useClientValue(hoyISO, null);
   const visibles = hoy ? proximosEventos(events, hoy) : events;
@@ -60,24 +101,7 @@ export default function Events() {
             className="flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-surface shadow-sm transition-[box-shadow,transform,border-color] duration-300 hover:-translate-y-1 hover:border-brand-blue/40 hover:shadow-lg"
           >
             <div className="relative aspect-[16/9] w-full bg-brand-navy">
-              {evento.banner ? (
-                <Image
-                  src={`/eventos/${evento.banner}`}
-                  alt={evento.title}
-                  fill
-                  sizes={SIZES}
-                  className="object-cover"
-                />
-              ) : (
-                // Fallback decorativo de marca: no aporta informacion, el titulo
-                // ya esta como texto debajo.
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 flex items-center justify-center bg-[radial-gradient(85%_80%_at_20%_0%,var(--color-brand-navy)_0%,var(--color-brand-navy-deep)_55%,var(--color-brand-black)_100%)]"
-                >
-                  <CalendarDays className="size-12 text-brand-gold/70" />
-                </div>
-              )}
+              <BannerEvento evento={evento} />
             </div>
 
             <div className="flex flex-1 flex-col p-5 sm:p-6">

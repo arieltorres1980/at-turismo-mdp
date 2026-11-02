@@ -80,6 +80,24 @@ test("assertContact lanza si siteUrl termina en `/` o no es https", () => {
   );
 });
 
+test("eventsSheet vacio es valido (sin hoja se usan los eventos de events.json)", () => {
+  assert.equal(contact.eventsSheet, "", "en main la hoja no esta configurada");
+  assert.equal(assertContact(clone({ eventsSheet: "" })), true);
+  assert.equal(assertContact(clone({ eventsSheet: undefined })), true);
+  assert.equal(
+    assertContact(
+      clone({ eventsSheet: "https://docs.google.com/spreadsheets/d/1Abc-DEF/edit#gid=0" }),
+    ),
+    true,
+  );
+});
+
+test("assertContact lanza si eventsSheet no es un link de Google Sheets", () => {
+  assert.throws(() => assertContact(clone({ eventsSheet: "https://ejemplo.com/eventos.csv" })), /eventsSheet/);
+  assert.throws(() => assertContact(clone({ eventsSheet: "mi planilla" })), /eventsSheet/);
+  assert.throws(() => assertContact(clone({ eventsSheet: 42 })), /eventsSheet/);
+});
+
 test("assertContact lanza si falta businessName", () => {
   assert.throws(() => assertContact(clone({ businessName: "" })), /businessName/);
 });

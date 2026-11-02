@@ -8,6 +8,7 @@
  * puede usar el alias `@/` (node --test no resuelve jsconfig.json).
  */
 import contactData from "../data/contact.json" with { type: "json" };
+import { csvUrlDeHoja } from "./sheet-url.js";
 
 export const contact = contactData;
 
@@ -74,6 +75,19 @@ export function assertContact(data = contact) {
   if (!hasValue(siteUrl)) fail("falta `siteUrl`.");
   if (!siteUrl.startsWith("https://")) fail("`siteUrl` tiene que empezar con `https://`.");
   if (siteUrl.endsWith("/")) fail("`siteUrl` no puede terminar con `/`.");
+
+  // `eventsSheet` es opcional: vacio (o ausente) significa "sin Google Sheet",
+  // los eventos salen de `src/data/events.json`. Si tiene algo, tiene que ser
+  // un link de Google Sheets del que se pueda derivar el CSV; si no, el sitio
+  // se quedaria con el fallback sin que nadie se entere.
+  const hoja = data.eventsSheet;
+  if (hoja !== undefined && typeof hoja !== "string") {
+    fail("`eventsSheet` tiene que ser un string (vacio = sin Google Sheet).");
+  }
+  if (hasValue(hoja)) {
+    const derivada = csvUrlDeHoja(hoja);
+    if (!derivada.ok) fail(`\`eventsSheet\`: ${derivada.motivo}`);
+  }
 
   return true;
 }

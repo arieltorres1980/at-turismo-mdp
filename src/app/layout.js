@@ -4,7 +4,9 @@ import Footer from "@/components/layout/Footer";
 import Navbar from "@/components/layout/Navbar";
 import WhatsAppFloat from "@/components/layout/WhatsAppFloat";
 import JsonLd from "@/components/seo/JsonLd";
+import content from "@/data/content.json";
 import { contact, waLink } from "@/lib/contact";
+import { getEvents } from "@/lib/events-source";
 import { navItems } from "@/lib/navigation";
 import "./globals.css";
 
@@ -49,8 +51,11 @@ export { metadata, viewport } from "@/lib/seo";
  */
 const JS_FLAG = "document.documentElement.classList.add('js');";
 
-export default function RootLayout({ children }) {
-  const items = navItems();
+export default async function RootLayout({ children }) {
+  // El link "#eventos" tiene que reflejar la MISMA fuente que la seccion (la
+  // Google Sheet si esta configurada), no el events.json del build. `getEvents`
+  // esta cacheado, asi que esto no agrega un segundo pedido a la hoja.
+  const items = navItems(content, await getEvents());
 
   return (
     <html
