@@ -134,3 +134,22 @@ test("la plantilla CSV del repo se puede importar a Sheets y no publica nada", a
   // Todas las filas de ejemplo van con Activo = NO.
   assert.deepEqual(events, []);
 });
+
+test("filasDesdeCsv acepta encabezados con (obligatorio) / (opcional) y asteriscos", () => {
+  const filas = filasDesdeCsv([
+    ["Título (obligatorio)", "Descripción (obligatorio)", "Día (obligatorio)", "Hora (opcional)", "Banner (opcional)", "Activo (opcional)"],
+    ["Recital", "Show", "14/12/2026", "21:00", "", "SI"],
+  ]);
+  assert.equal(filas.length, 1);
+  assert.equal(filas[0].titulo, "Recital");
+  assert.equal(filas[0].descripcion, "Show");
+  assert.equal(filas[0].dia, "14/12/2026");
+  assert.equal(filas[0].hora, "21:00");
+  assert.equal(filas[0].fila, 2);
+
+  const conAsterisco = filasDesdeCsv([
+    ["Título *", "Descripción *", "Día *"],
+    ["A", "B", "01/01/2027"],
+  ]);
+  assert.equal(conAsterisco[0].titulo, "A");
+});

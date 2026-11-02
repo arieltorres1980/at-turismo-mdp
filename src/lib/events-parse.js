@@ -300,11 +300,17 @@ export function parseEventRows(filas = [], options = {}) {
   return { events, errors };
 }
 
-/** "Título" -> "titulo": sin acentos, en minuscula, sin espacios al borde. */
-function normalizarEncabezado(texto) {
+/**
+ * "Título" -> "titulo": sin acentos, en minuscula, sin espacios al borde.
+ * Ignora lo que va entre parentesis y los asteriscos, para que la planilla
+ * pueda decir "Título (obligatorio)" o "Hora (opcional)" sin romper nada.
+ */
+export function normalizarEncabezado(texto) {
   return String(texto)
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
+    .replace(/\([^)]*\)/g, "")
+    .replace(/\*/g, "")
     .trim()
     .toLowerCase();
 }
