@@ -58,23 +58,41 @@ tiene que dar **0 resultados**.
 
 Regla del contrato: **string vacío = no se muestra y no se emite en el JSON-LD.**
 
+`contact.json` tiene además un campo que no es de contacto: **`eventsSheet`**, la URL de la
+Google Sheet de eventos (ver 4b). Vacío es válido y significa "sin hoja". Si tiene algo,
+`assertContact` verifica que sea un link de Google Sheets del que se pueda derivar el CSV:
+si no, el sitio se quedaría mudo con el fallback sin que nadie se enterara.
+
 Los textos de las secciones viven en `src/data/content.json`. Revisalos con el cliente: no
 afirmes seguros, horarios ni precios que no estén confirmados.
 
-## 4b. Eventos: la planilla es la fuente de verdad
+## 4b. Eventos: dos fuentes, una sola validación
 
-`data/eventos.xlsx` → `scripts/build-events.mjs` → `src/data/events.json` → sección
-"Próximos eventos". El dueño del negocio edita **solo la planilla** (instrucciones para él
-en `README.md`); nadie edita `events.json` a mano.
+La sección "Próximos eventos" se alimenta de **dos fuentes posibles**, resueltas en el
+servidor por `src/lib/events-source.js`:
+
+1. **`contact.json → eventsSheet`**: la Google Sheet del dueño, leída en runtime. Si tiene
+   algo, **manda**. Un evento nuevo aparece **sin redeploy** (ver abajo).
+2. **`src/data/events.json`**, que genera el build desde `data/eventos.xlsx`. Es el único
+   contenido si no hay hoja, y el **fallback** cuando la hoja falla.
+
+El dueño edita **solo la hoja o solo la planilla** (instrucciones para él en `README.md`);
+nadie edita `events.json` a mano.
 
 | Pieza | Qué hace |
 |---|---|
 | `data/eventos.xlsx` | Hoja `Eventos` (Título, Descripción, Día, Hora, Banner, Activo) + hoja `Instrucciones`. Las filas de ejemplo van con `Activo = NO`. |
+| `data/eventos-google-sheets.csv` | La misma plantilla en CSV, para importar a Drive y crear la Google Sheet. |
 | `scripts/make-events-template.mjs` | `npm run eventos:plantilla`. **Pisa la planilla**: solo para regenerarla de cero. |
-| `scripts/lib/parse-events.mjs` | Parseo y validación, **funciones puras**: no tocan disco, no leen el reloj, no conocen ExcelJS. Acá van los tests. |
+| `src/lib/events-parse.js` | Parseo y validación de una fila, **puras**: no tocan disco ni red ni el reloj, no conocen ExcelJS. Las usan **las dos** fuentes. `filasDesdeCsv` mapea la matriz del CSV a filas. |
+| `scripts/lib/parse-events.mjs` | Solo re-exporta `src/lib/events-parse.js`, para no cambiar los imports de `scripts/`. Sin lógica. |
+| `src/lib/csv.js` | Parser de CSV propio (comillas, comas y saltos de línea en el campo, BOM, CRLF). **`exceljs` sigue siendo devDependency y no entra en `src/`.** |
+| `src/lib/sheet-url.js` | De cualquier link de Google Sheets a la URL del CSV (`/export?format=csv&gid=` o `/d/e/<KEY>/pub?output=csv`). |
+| `src/lib/banner-hosts.js` | Hosts habilitados para un banner por URL **y** los `images.remotePatterns` que importa `next.config.mjs`. Una sola fuente, con test de coherencia. |
+| `src/lib/events-source.js` | `getEvents()` con `'use cache'`. Elige la fuente, parsea, loguea y cae al fallback. **Solo servidor.** |
 | `scripts/build-events.mjs` | `npm run eventos` y `prebuild`. Escribe `src/data/events.json` ordenado por fecha, o **corta el build** con los errores y su número de fila. |
 | `src/lib/events.js` | Runtime: `proximosEventos(events, hoy)`, `formatearFechaEvento` (es-AR, en UTC) y `hoyISO()` (solo cliente). |
-| `src/components/sections/Events.jsx` | La sección. Client Component (ver abajo). |
+| `src/components/sections/Events.jsx` | La sección. Client Component, recibe los eventos **por props**. |
 
 Reglas:
 
@@ -82,25 +100,67 @@ Reglas:
   No encadenar el script dentro de `build`: se duplicaría.
 - **`events.json` se commitea**, igual que cualquier `src/data/*.json`. En `main` tiene que
   estar en `[]` o solo con eventos reales del cliente: **nunca con los ejemplos**.
-- Un banner nombrado en la planilla que no exista en `public/eventos/` es **error de build**,
-  no un `<img>` roto en producción.
+- **Las dos fuentes tratan los errores distinto, a propósito**: en el `.xlsx` una fila mala
+  **corta el build** (hay un humano mirando la consola); en la hoja **se ignora la fila** con
+  un `console.warn` del servidor y el resto se publica (nadie está mirando, y romper la
+  landing por una celda sería peor). Por lo mismo, un banner local inexistente es error de
+  build en el `.xlsx` y en la hoja se resuelve con el fallback visual de la tarjeta.
 - **No se emite `Event` de schema.org.** Google exige `location` con un lugar concreto y la
   planilla no pide lugar; inventar un venue sería un dato estructurado falso. Documentado
   en `src/lib/jsonld.js`.
+
+### Revalidación: por qué el evento aparece sin redeploy
+
+`getEvents()` es `'use cache'` + `cacheLife({ stale: 300, revalidate: 300, expire: 3600 })`.
+Es el equivalente en Cache Components del viejo `getStaticProps` con `revalidate`: `/` se
+sigue prerenderizando estática (`next build` la reporta con `Revalidate 5m / Expire 1h`) y
+cinco minutos después de una visita Next vuelve a pedir la hoja en segundo plano y regenera
+el HTML.
+
+Los números **no son libres**: con `expire` menor a 5 min el resultado queda fuera del
+prerender y la sección pasaría a resolverse en cada request; con `stale` menor a 30 s se cae
+del prefetch. Si hay que bajar el tiempo, leer
+`node_modules/next/dist/docs/01-app/03-api-reference/04-functions/cacheLife.md#prerendering-behavior`
+antes de tocarlo.
+
+Lo que la hoja **no** hace: filtrar los eventos pasados. Eso necesita la fecha actual y con
+`cacheComponents: true` el prerender no puede leerla (sigue siendo trabajo del cliente).
+
+Para probar contra una hoja falsa hay un override de entorno, `EVENTS_SHEET_CSV_URL`, que se
+usa **tal cual** sin pasar por la derivación de Google. Es solo para desarrollo: **no se
+pone una URL de prueba en `contact.json`**.
+
+### Banners por URL
+
+La columna Banner acepta el nombre de un archivo de `public/eventos/` (como siempre) o una
+**URL https de una imagen de Google Drive**. Hosts habilitados, y solo esos:
+`lh3.googleusercontent.com`, `*.googleusercontent.com` y `drive.google.com/uc`. El link que
+copia Drive (`/file/d/<ID>/view`) es una página HTML, no una imagen: el parser lo reescribe a
+`https://lh3.googleusercontent.com/d/<ID>`.
+
+Cualquier otro host **se rechaza en el parser**, y además no está en `remotePatterns`, así
+que el optimizador devolvería 400. Si la imagen remota no carga, `BannerEvento` se cae al
+fondo decorativo de marca (`onError`, por eso necesita estado por tarjeta).
 
 **Filtrado de eventos pasados — decisión.** Con `cacheComponents: true` el prerender no puede
 leer la fecha actual, así que no se puede filtrar en el servidor. `Events.jsx` es
 `'use client'` y resuelve hoy con `useClientValue`:
 
-- en el HTML prerenderizado y **sin JavaScript se ven todos** los eventos del JSON, incluso
+- en el HTML prerenderizado y **sin JavaScript se ven todos** los eventos de la fuente, incluso
   alguno vencido (tolerante a propósito: mejor mostrar de más que esconder la sección);
 - **con JavaScript**, al hidratar se descartan los pasados y, si no queda ninguno, la sección
   desaparece del DOM.
 
-El link `#eventos` de la navegación se decide **en el build** con el JSON completo
-(`src/lib/navigation.js`), igual que el de testimonios: si `events.json` está vacío, no
-existe. Consecuencia conocida: si **todos** los eventos cargados ya pasaron, el link queda en
-el menú aunque la sección se oculte. Por eso la planilla y el README piden borrar las filas
+El link `#eventos` de la navegación lo decide `navItems(content, await getEvents())` en
+`src/app/layout.js`: la **misma lista** que recibe la sección, de la **misma fuente activa**
+y del mismo entry de caché (`getEvents` está cacheado, no son dos pedidos a la hoja). Ya no
+se decide con `events.json` importado, que con la hoja configurada sería una lista distinta a
+la que se renderiza. `navItems` ya no importa el JSON: el default es `[]`, el estado seguro
+(nunca un link a una sección que no se renderizó).
+
+Consecuencia conocida, igual que antes: si **todos** los eventos cargados ya pasaron, el link
+queda en el menú aunque la sección se oculte, porque el filtro por fecha corre en el cliente
+y el link se resuelve en el servidor. Por eso la planilla y el README piden borrar las filas
 viejas.
 
 El CTA "Consultar por este evento" **abre WhatsApp directo** con título, día y hora
