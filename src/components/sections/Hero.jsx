@@ -1,3 +1,4 @@
+import { getImageProps } from "next/image";
 import Container from "@/components/ui/Container";
 import ButtonLink from "@/components/ui/ButtonLink";
 import Icon from "@/components/ui/Icon";
@@ -15,6 +16,16 @@ import { contact, waLink } from "@/lib/contact";
  */
 export default function Hero() {
   const { hero } = content;
+
+  // Art direction: foto vertical en movil, horizontal desde tablet (md).
+  // Es decorativa (`alt=""`) y es la imagen LCP candidata, por eso `priority`.
+  const comunes = { alt: "", fill: true, sizes: "100vw", priority: true };
+  const {
+    props: { srcSet: srcSetHorizontal },
+  } = getImageProps({ ...comunes, src: "/images/PortadaHorizontal.webp" });
+  const {
+    props: { srcSet: srcSetVertical, ...imgProps },
+  } = getImageProps({ ...comunes, src: "/images/PortadaVertical.webp" });
   const [antes, despues] = hero.titleHighlight
     ? hero.title.split(hero.titleHighlight)
     : [hero.title, ""];
@@ -25,9 +36,16 @@ export default function Hero() {
       aria-labelledby="inicio-titulo"
       className="relative isolate overflow-hidden bg-brand-navy-deep text-white"
     >
+      <picture className="absolute inset-0 -z-20 block">
+        <source media="(min-width: 768px)" srcSet={srcSetHorizontal} />
+        <source srcSet={srcSetVertical} />
+        <img {...imgProps} alt="" className="size-full object-cover" />
+      </picture>
+      {/* Capa oscura: las fotos son claras y el texto blanco necesita contraste (AA). */}
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-brand-navy-deep/50" />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[radial-gradient(90%_70%_at_15%_0%,var(--color-brand-navy)_0%,var(--color-brand-navy-deep)_55%,var(--color-brand-black)_100%)]"
+        className="absolute inset-0 -z-10 bg-linear-to-b from-brand-navy/50 via-transparent to-brand-black/70"
       />
       <div
         aria-hidden="true"

@@ -32,15 +32,9 @@ export default function Waves({ className = "" }) {
   ];
 
   return (
-    <div
-      className={`pointer-events-none absolute inset-x-0 bottom-0 overflow-hidden ${className}`}
-      aria-hidden="true"
-    >
+    <div id="waves" className={`pointer-events-none absolute inset-x-0 bottom-0 overflow-hidden ${className}`} aria-hidden="true" >
       {layers.map((layer) => (
-        <div
-          key={layer.color}
-          className={`absolute inset-x-0 flex w-[200%] ${layer.offset} ${layer.animation}`}
-        >
+        <div key={layer.color} className={`absolute inset-x-0 flex w-[200%] ${layer.offset} ${layer.animation}`} >
           <Band className={`w-1/2 ${layer.height} ${layer.color}`} />
           <Band className={`w-1/2 ${layer.height} ${layer.color}`} />
         </div>

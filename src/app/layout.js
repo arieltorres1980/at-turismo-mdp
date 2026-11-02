@@ -58,9 +58,13 @@ export default async function RootLayout({ children }) {
   const items = navItems(content, await getEvents());
 
   return (
+    // `suppressHydrationWarning`: el script JS_FLAG agrega la clase `js` a <html>
+    // antes de hidratar, asi que el className del cliente difiere del del
+    // servidor a proposito. Solo silencia los atributos de este elemento.
     <html
       lang="es-AR"
       className={`${body.variable} ${display.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col bg-surface text-ink">
         <script dangerouslySetInnerHTML={{ __html: JS_FLAG }} />
