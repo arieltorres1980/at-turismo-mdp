@@ -11,7 +11,7 @@ import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 import { parseCsv } from "../src/lib/csv.js";
-import { filasDesdeCsv, parseEventRows } from "../src/lib/events-parse.js";
+import { filasDesdeCsv, normalizarEncabezado, parseEventRows } from "../src/lib/events-parse.js";
 
 test("CSV simple, con CRLF y con salto final", () => {
   assert.deepEqual(parseCsv("a,b\nc,d"), [["a", "b"], ["c", "d"]]);
@@ -127,7 +127,14 @@ test("la plantilla CSV del repo se puede importar a Sheets y no publica nada", a
     "utf8",
   );
   const matriz = parseCsv(texto);
-  assert.deepEqual(matriz[0], ["Título", "Descripción", "Día", "Hora", "Banner", "Activo"]);
+  assert.deepEqual(matriz[0].map(normalizarEncabezado), [
+    "titulo",
+    "descripcion",
+    "dia",
+    "hora",
+    "banner",
+    "activo",
+  ]);
 
   const { events, errors } = parseEventRows(filasDesdeCsv(matriz), { bannerExiste: () => true });
   assert.deepEqual(errors, []);
