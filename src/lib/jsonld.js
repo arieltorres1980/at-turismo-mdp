@@ -6,6 +6,11 @@
  * - `Review` / `AggregateRating`: Google no admite resenas propias del negocio.
  * - `FAQPage`: Google limito ese rich result a sitios de gobierno y salud.
  * - `priceRange`, `geo`, `hasMap`: no hay dato del cliente.
+ * - `Event` por los eventos de "Próximos eventos": Google exige `location` con
+ *   un lugar concreto, y la planilla `data/eventos.xlsx` solo pide titulo,
+ *   descripcion, dia y hora. Inventar una direccion o poner "Mar del Plata"
+ *   como venue seria datos estructurados falsos (y motivo de penalizacion).
+ *   Si algun dia la planilla tiene columna de lugar, se agrega aca.
  *
  * Import relativo (sin `@/`) para poder testear con `node --test`.
  */

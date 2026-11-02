@@ -35,6 +35,11 @@
     "destinations": {
       "title": "Consultanos por estos destinos"
     },
+    "events": {
+      "eyebrow": "Próximos eventos",
+      "title": "Eventos a los que te llevamos",
+      "subtitle": "Te dejamos en la puerta y te buscamos a la salida. Consultanos por el evento que te interesa."
+    },
     "whyUs": {
       "eyebrow": "Por qué elegirnos",
       "title": "Un viaje que no te da trabajo",
@@ -176,6 +181,9 @@
     }
   ],
   "testimonials": [],
+  "events": {
+    "cta": "Consultar por este evento"
+  },
   "contact": {
     "asideTitle": "Hablemos directo",
     "asideText": "Si preferís no completar el formulario, escribinos o llamanos y te ayudamos a armar tu viaje.",

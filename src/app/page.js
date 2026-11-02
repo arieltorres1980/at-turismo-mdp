@@ -1,4 +1,5 @@
 import Contact from "@/components/sections/Contact";
+import Events from "@/components/sections/Events";
 import Faq from "@/components/sections/Faq";
 import Hero from "@/components/sections/Hero";
 import HowItWorks from "@/components/sections/HowItWorks";
@@ -16,6 +17,7 @@ export default function Home() {
       <Hero />
       <Services />
       <HowItWorks />
+      <Events />
       <WhyUs />
       <Testimonials />
       <Faq />
