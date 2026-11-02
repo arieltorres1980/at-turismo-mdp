@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "eventos": "node scripts/build-events.mjs",
+    "eventos:plantilla": "node scripts/make-events-template.mjs",
+    "prebuild": "node scripts/build-events.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -20,6 +23,7 @@
     "@tailwindcss/turbopack": "^4",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
+    "exceljs": "^4.4.0",
     "tailwindcss": "^4"
   }
 }
