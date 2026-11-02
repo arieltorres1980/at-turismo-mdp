@@ -81,7 +81,7 @@ test("assertContact lanza si siteUrl termina en `/` o no es https", () => {
 });
 
 test("eventsSheet vacio es valido (sin hoja se usan los eventos de events.json)", () => {
-  assert.equal(contact.eventsSheet, "", "en main la hoja no esta configurada");
+  assert.equal(assertContact(clone({})), true, "el contact.json real (con o sin hoja) es valido");
   assert.equal(assertContact(clone({ eventsSheet: "" })), true);
   assert.equal(assertContact(clone({ eventsSheet: undefined })), true);
   assert.equal(
