@@ -68,6 +68,13 @@ test("parseDia acepta celdas fecha de Excel (Date en UTC) y el serial", () => {
   assert.equal(parseDia(46340), "2026-11-14");
 });
 
+test("parseDia acepta MM/DD/AAAA cuando el dia no puede ser un mes (export de Sheets en ingles)", () => {
+  assert.equal(parseDia("11/14/2026"), "2026-11-14");
+  assert.equal(parseDia("1/31/2027"), "2027-01-31");
+  // Si los dos numeros pueden ser mes, manda DD/MM/AAAA (lo que pide la planilla).
+  assert.equal(parseDia("03/04/2027"), "2027-04-03");
+});
+
 test("parseDia rechaza fechas imposibles y basura", () => {
   assert.equal(parseDia("31/02/2026"), null);
   assert.equal(parseDia("29/02/2026"), null);
