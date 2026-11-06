@@ -1,3 +1,4 @@
+import { GoogleTagManager } from "@next/third-parties/google";
 import { Inter, Playfair_Display } from "next/font/google";
 
 import Footer from "@/components/layout/Footer";
@@ -49,6 +50,15 @@ export { metadata, viewport } from "@/lib/seo";
  * El estado oculto de `Reveal` cuelga de `.js` en globals.css, asi que sin JS
  * no se oculta nada (mejora progresiva, R4 del PLAN).
  */
+/**
+ * Google Tag Manager. GA4 y el resto de las etiquetas se configuran dentro del
+ * contenedor GTM, no en el codigo. Solo se carga en produccion de Vercel:
+ * previews y desarrollo no ensucian las metricas. Se puede pisar el ID con
+ * `NEXT_PUBLIC_GTM_ID`.
+ */
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "GTM-THFWC2RK";
+const GTM_ACTIVO = process.env.VERCEL_ENV === "production";
+
 const JS_FLAG = "document.documentElement.classList.add('js');";
 
 export default async function RootLayout({ children }) {
@@ -91,6 +101,7 @@ export default async function RootLayout({ children }) {
         <WhatsAppFloat />
         <JsonLd />
       </body>
+      {GTM_ACTIVO ? <GoogleTagManager gtmId={GTM_ID} /> : null}
     </html>
   );
 }
