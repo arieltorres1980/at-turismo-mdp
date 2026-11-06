@@ -3,7 +3,7 @@
   "shortName": "AT Turismo",
   "tagline": "Traslados en Mar del Plata",
   "description": "Traslados y viajes desde Mar del Plata: aeropuertos, terminales, puerta a puerta y excursiones. Cotizá tu viaje por WhatsApp en minutos.",
-  "siteUrl": "https://at-turismo-mdp.vercel.app",
+  "siteUrl": "https://www.attrasladosmdp.com.ar",
   "locale": "es-AR",
   "phone": {
     "display": "+54 9 223 571-9924",
@@ -26,7 +26,10 @@
     "country": "AR"
   },
   "areaServed": [
-    "Mar del Plata"
+    "Mar del Plata",
+    "General Pueyrredón",
+    "Buenos Aires",
+    "Costa Atlántica"
   ],
   "openingHours": [],
   "legal": {

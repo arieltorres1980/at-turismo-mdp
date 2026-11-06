@@ -1,7 +1,7 @@
 # AT Turismo y Traslados — sitio web
 
 Sitio de una sola página para traslados y viajes desde Mar del Plata.
-Está publicado en **https://at-turismo-mdp.vercel.app**.
+Está publicado en **https://www.attrasladosmdp.com.ar**.
 
 El formulario de cotización no guarda nada: arma un mensaje y abre WhatsApp.
 

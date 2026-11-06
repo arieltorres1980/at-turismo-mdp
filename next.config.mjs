@@ -22,6 +22,20 @@ const nextConfig = {
      */
     remotePatterns: PATRONES_BANNER_REMOTO,
   },
+  /**
+   * SEO: el dominio *.vercel.app sigue respondiendo; se redirige (308) al
+   * dominio propio para no tener contenido duplicado entre dos hosts.
+   */
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "at-turismo-mdp.vercel.app" }],
+        destination: "https://www.attrasladosmdp.com.ar/:path*",
+        permanent: true,
+      },
+    ];
+  },
   turbopack: {
     rules: {
       "*.css": {

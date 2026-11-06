@@ -27,7 +27,13 @@ test("address omite campos vacios; areaServed descarta TODO_CLIENTE", () => {
   assert.equal("streetAddress" in b.address, false);
   assert.equal("postalCode" in b.address, false);
   assert.equal(b.address.addressLocality, "Mar del Plata");
-  assert.deepEqual(b.areaServed, [{ "@type": "City", name: "Mar del Plata" }]);
+  assert.deepEqual(
+    b.areaServed,
+    ["Mar del Plata", "General Pueyrredón", "Buenos Aires", "Costa Atlántica"].map((name) => ({
+      "@type": "AdministrativeArea",
+      name,
+    })),
+  );
 });
 
 test("sin direccion real no se emite address", () => {

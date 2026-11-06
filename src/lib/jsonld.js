@@ -57,7 +57,7 @@ export function buildJsonLd(data = defaultContact) {
   // Solo el @type no es una direccion: si no hay ningun dato real, se omite.
   const hasAddress = Object.keys(address).length > 1;
 
-  const areas = cleanAreas(data.areaServed).map((name) => ({ "@type": "City", name }));
+  const areas = cleanAreas(data.areaServed).map((name) => ({ "@type": "AdministrativeArea", name }));
   const sameAs = [data.instagram?.url].filter(hasValue);
 
   const business = compact({

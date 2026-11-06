@@ -79,7 +79,7 @@ const INSTRUCCIONES = [
 async function main() {
   const workbook = new ExcelJS.Workbook();
   workbook.creator = "AT Turismo y Traslados";
-  workbook.description = "Próximos eventos publicados en at-turismo-mdp.vercel.app";
+  workbook.description = "Próximos eventos publicados en www.attrasladosmdp.com.ar";
   // Fecha fija: el archivo generado tiene que ser reproducible y no ensuciar el
   // diff de git cada vez que se regenera.
   workbook.created = new Date(Date.UTC(2026, 0, 1));
