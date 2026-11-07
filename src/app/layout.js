@@ -56,7 +56,7 @@ export { metadata, viewport } from "@/lib/seo";
  * previews y desarrollo no ensucian las metricas. Se puede pisar el ID con
  * `NEXT_PUBLIC_GTM_ID`.
  */
-const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "GTM-THFWC2RK";
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "GTM-NMKG4M5M";
 const GTM_ACTIVO = process.env.VERCEL_ENV === "production";
 
 const JS_FLAG = "document.documentElement.classList.add('js');";
